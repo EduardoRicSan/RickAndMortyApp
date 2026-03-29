@@ -24,4 +24,7 @@ dependencyResolutionManagement {
 
 rootProject.name = "RickAndMortyChallenge"
 include(":app")
- 
+include(":core")
+include(":data")
+include(":domain")
+include(":design_system")

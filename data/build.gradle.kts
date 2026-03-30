@@ -21,6 +21,13 @@ android {
     }
 
     buildTypes {
+        debug {
+            buildConfigField(
+                "String",
+                "RICK_AND_MORTY_BASE_URL",
+                "\"${project.findProperty("RICK_AND_MORTY_BASE_URL") ?: ""}\"",
+            )
+        }
         release {
             isMinifyEnabled = false
             proguardFiles(
@@ -28,6 +35,9 @@ android {
                 "proguard-rules.pro"
             )
         }
+    }
+    buildFeatures {
+        buildConfig = true
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11

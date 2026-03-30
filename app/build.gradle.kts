@@ -70,6 +70,10 @@ dependencies {
     ksp(libs.dagger.hilt.compiler)
     implementation(libs.hilt.navigation.compose)
     ksp(libs.androidx.hilt.compiler)
+    //PAGING3
+    implementation(libs.androidx.paging.common)
+    implementation(libs.androidx.paging.compose)
+    implementation(libs.androidx.paging.runtime)
     // Tests
     testImplementation(libs.junit)
     testImplementation(libs.mockk)

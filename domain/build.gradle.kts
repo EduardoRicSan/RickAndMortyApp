@@ -45,8 +45,9 @@ dependencies {
     implementation(libs.hilt.navigation.compose)
     implementation(libs.kotlinx.serialization.json)
     //PAGING3
-    implementation(libs.paging.common)
-    implementation(libs.paging.compose.common)
+    implementation(libs.androidx.paging.common)
+    implementation(libs.androidx.paging.compose)
+    implementation(libs.androidx.paging.runtime)
     // Tests
     testImplementation(libs.junit)
     testImplementation(libs.mockk)

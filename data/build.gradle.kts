@@ -1,3 +1,5 @@
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.serialization)
@@ -13,6 +15,23 @@ android {
         }
     }
 
+    // Cargamos local.properties manualmente para asegurar la lectura de valores protegidos
+    val localProperties = Properties()
+    val localPropertiesFile = project.rootProject.file("local.properties")
+    if (localPropertiesFile.exists()) {
+        localProperties.load(localPropertiesFile.inputStream())
+    }
+
+    // Buscamos la propiedad en local.properties, si no existe buscamos en variables de entorno.
+    // No se expone ningún string por defecto (fallback vacío).
+    val baseUrl = localProperties.getProperty("RICK_AND_MORTY_BASE_URL") 
+        ?: System.getenv("RICK_AND_MORTY_BASE_URL") 
+        ?: ""
+
+    if (baseUrl.isEmpty()) {
+        logger.warn("CUIDADO: RICK_AND_MORTY_BASE_URL no está definida en local.properties ni en el sistema.")
+    }
+
     defaultConfig {
         minSdk = 24
 
@@ -22,13 +41,10 @@ android {
 
     buildTypes {
         debug {
-            buildConfigField(
-                "String",
-                "RICK_AND_MORTY_BASE_URL",
-                "\"${project.findProperty("RICK_AND_MORTY_BASE_URL") ?: ""}\"",
-            )
+            buildConfigField("String", "RICK_AND_MORTY_BASE_URL", "\"$baseUrl\"")
         }
         release {
+            buildConfigField("String", "RICK_AND_MORTY_BASE_URL", "\"$baseUrl\"")
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
@@ -69,6 +85,8 @@ dependencies {
     // AndroidX
     implementation(libs.androidx.monitor)
     implementation(libs.androidx.junit.ktx)
+    // Paging
+    implementation(libs.androidx.paging.common)
     // Unit Test
     testImplementation(libs.junit)
     testImplementation(libs.androidx.junit)

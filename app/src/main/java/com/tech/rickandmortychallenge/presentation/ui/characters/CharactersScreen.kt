@@ -30,6 +30,7 @@ import com.tech.design_system.components.text.RMCaptionText
 import com.tech.design_system.components.text.RMTitleText
 import com.tech.design_system.tokens.spacing
 import com.tech.domain.model.CharacterModel
+import com.tech.rickandmortychallenge.presentation.ui.state.RMErrorState
 import com.tech.rickandmortychallenge.presentation.viewmodel.CharactersViewModel
 
 @Composable
@@ -49,50 +50,50 @@ fun CharactersScreen(
 
     Box(modifier = Modifier.fillMaxSize()) {
 
-        LazyVerticalGrid(
-            columns = GridCells.Fixed(2),
-            modifier = Modifier.fillMaxSize(),
-            contentPadding = PaddingValues(MaterialTheme.spacing.md),
-            verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.md),
-            horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.md)
-        ) {
+        when (val refreshState = characters.loadState.refresh) {
 
-            items(
-                count = characters.itemCount,
-                key = { index -> characters[index]?.id ?: index }
-            ) { index ->
-
-                val character = characters[index] ?: return@items
-
-                CharacterItem(character)
+            is LoadState.Error -> {
+                RMErrorState(
+                    message = refreshState.error.message ?: "Error loading characters",
+                    onRetry = { characters.retry() }
+                )
             }
 
-            // Loader al paginar
-            item(span = { GridItemSpan(2) }) {
-                if (characters.loadState.append is LoadState.Loading) {
-                    Box(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(MaterialTheme.spacing.md),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        RMSimpleLoadingIndicator()
+            is LoadState.NotLoading -> {
+                LazyVerticalGrid(
+                    columns = GridCells.Fixed(2),
+                    modifier = Modifier.fillMaxSize(),
+                    contentPadding = PaddingValues(MaterialTheme.spacing.md),
+                    verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.md),
+                    horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.md)
+                ) {
+
+                    items(
+                        count = characters.itemCount,
+                        key = { index -> characters[index]?.id ?: index }
+                    ) { index ->
+
+                        val character = characters[index] ?: return@items
+                        CharacterItem(character)
+                    }
+
+                    // Loader paginación
+                    item(span = { GridItemSpan(2) }) {
+                        if (characters.loadState.append is LoadState.Loading) {
+                            Box(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(MaterialTheme.spacing.md),
+                                contentAlignment = Alignment.Center
+                            ) {
+                                RMSimpleLoadingIndicator()
+                            }
+                        }
                     }
                 }
             }
-        }
 
-        // Error handling
-        val error = characters.loadState.refresh as? LoadState.Error
-        error?.let {
-            LaunchedEffect(Unit) {
-                showTopSnackbar(
-                    RMSnackbarMessage(
-                        type = RMSnackbarType.Error,
-                        message = it.error.message ?: "Error loading characters"
-                    )
-                )
-            }
+            else -> Unit
         }
     }
 }

@@ -26,4 +26,5 @@
     <string name="ts_swiftui">SwiftUI</string>
     <string name="ts_ia">IA Tools</string>
     <string name="collaborated_apps">Collaboration Apps</string>
+    <string name="something_went_wrong">Something went wrong</string>
 </resources>

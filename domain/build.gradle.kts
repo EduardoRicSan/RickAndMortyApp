@@ -44,7 +44,9 @@ dependencies {
     ksp(libs.dagger.hilt.compiler)
     implementation(libs.hilt.navigation.compose)
     implementation(libs.kotlinx.serialization.json)
-
+    //PAGING3
+    implementation(libs.paging.common)
+    implementation(libs.paging.compose.common)
     // Tests
     testImplementation(libs.junit)
     testImplementation(libs.mockk)

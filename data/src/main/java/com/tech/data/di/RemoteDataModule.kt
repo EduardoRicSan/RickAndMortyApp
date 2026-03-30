@@ -5,8 +5,6 @@ import com.tech.data.BuildConfig
 import com.tech.data.remote.api.RMApiConstants.LOG_RM_CLIENT
 import com.tech.data.remote.api.RMApiService
 import com.tech.data.remote.api.RMApiServiceImpl
-import com.tech.data.remote.dataSource.RMDataSource
-import com.tech.data.remote.dataSource.RMDataSourceImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -19,7 +17,6 @@ import io.ktor.client.plugins.logging.LogLevel
 import io.ktor.client.plugins.logging.Logger
 import io.ktor.client.plugins.logging.Logging
 import io.ktor.client.request.accept
-import io.ktor.client.request.header
 import io.ktor.http.ContentType
 import io.ktor.http.URLProtocol
 import io.ktor.http.contentType
@@ -60,17 +57,10 @@ object RemoteDataModule {
 
     @Provides
     @Singleton
-    fun provideDiscogsApiService(
+    fun provideRMApiService(
         discogsHttpClient: HttpClient,
     ): RMApiService =
         RMApiServiceImpl(discogsHttpClient)
 
-    @Provides
-    @Singleton
-    fun provideBXMasDataSource(
-        discogsApiService: RMApiService
-    ): RMDataSource =
-        RMDataSourceImpl(
-            discogsApiService,
-        )
+
 }

@@ -1,3 +1,5 @@
 <resources>
-    <string name="app_name">RickAndMortyChallenge</string>
+    <string name="app_name">Rick And Morty</string>
+    <string name="characters">Characters</string>
+    <string name="about">About</string>
 </resources>

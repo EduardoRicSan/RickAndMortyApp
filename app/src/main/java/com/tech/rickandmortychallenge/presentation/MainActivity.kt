@@ -1,0 +1,22 @@
+package com.tech.rickandmortychallenge.presentation
+
+import android.os.Bundle
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
+import androidx.activity.enableEdgeToEdge
+import com.tech.design_system.theme.RMChallengeTheme
+import com.tech.rickandmortychallenge.presentation.navigation.RMNavHost
+import dagger.hilt.android.AndroidEntryPoint
+
+@AndroidEntryPoint
+class MainActivity : ComponentActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
+        setContent {
+            RMChallengeTheme {
+                RMNavHost()
+            }
+        }
+    }
+}

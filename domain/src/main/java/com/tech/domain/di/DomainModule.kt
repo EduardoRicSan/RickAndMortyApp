@@ -1,7 +1,9 @@
 package com.tech.domain.di
 
 import com.tech.data.remote.api.RMApiService
+import com.tech.domain.repository.RMRepository
 import com.tech.domain.repository.RMRepositoryImpl
+import com.tech.domain.useCase.GetAllCharactersUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -16,5 +18,12 @@ object DomainModule {
     @Singleton
     fun providesRMRepository(
         apiService: RMApiService,
-    ): RMRepositoryImpl = RMRepositoryImpl(apiService)
+    ): RMRepository = RMRepositoryImpl(apiService)
+
+    @Provides
+    @Singleton
+    fun provideGetAllCharactersUseCase(
+        rmRepository: RMRepository,
+    ): GetAllCharactersUseCase =
+        GetAllCharactersUseCase(rmRepository)
 }
